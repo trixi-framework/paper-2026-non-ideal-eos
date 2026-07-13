@@ -1,6 +1,6 @@
 # Main-text figure reproduction
 
-Scripts in this folder reproduce **Figures 1–9** of the compiled paper (`paper/main.pdf` in the parent research repository). Run all commands from this directory.
+Scripts in this folder reproduce **Figures 1–9** of the paper. All commands should be run from this directory.
 
 ## Environment setup
 
@@ -8,7 +8,7 @@ Scripts in this folder reproduce **Figures 1–9** of the compiled paper (`paper
 julia --project=. -e 'using Pkg; Pkg.instantiate()'
 ```
 
-Julia **1.12.6** was used to resolve `[Manifest.toml](Manifest.toml)`.
+Julia 1.12.6 was used to resolve `[Manifest.toml](Manifest.toml)`.
 
 Optional Python environment for jet rendering (from repository root):
 
@@ -19,14 +19,14 @@ pip install numpy matplotlib pyvista
 ## Figure map
 
 
-| Paper figure | Script(s) |
-|--------------|-----------|
-| **Figure 1** — EPEC vs APEC (van der Waals density wave) | [`generate_EPEC_vdw_figs.jl`](generate_EPEC_vdw_figs.jl) |
-| **Figure 2** — APEC vs APEC+LxF (Peng–Robinson wave) | [`generate_APEC_LxF_pr_figs.jl`](generate_APEC_LxF_pr_figs.jl) |
-| **Figure 3** — APEC vs APEC+entropy correction (smooth/sharp wave) | [`generate_APEC_EC_pr_figs.jl`](generate_APEC_EC_pr_figs.jl) |
-| **Figures 4–5** — Transcritical shock tube | [`generate_pr_shock_figs.jl`](generate_pr_shock_figs.jl) |
-| **Figures 6–7** — Transcritical mixing layer | [`trixi_transcritical_mixing.jl`](trixi_transcritical_mixing.jl) |
-| **Figures 8–9** — Transcritical jet | [`trixi_transcritical_jet.jl`](trixi_transcritical_jet.jl), [`plot_vtu_fields.py`](plot_vtu_fields.py) |
+| Paper figure                                                       | Script(s)                                                                                              |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| **Figure 1** — EPEC vs APEC (van der Waals density wave)           | `[generate_EPEC_vdw_figs.jl](generate_EPEC_vdw_figs.jl)`                                               |
+| **Figure 2** — APEC vs APEC+LxF (Peng–Robinson wave)               | `[generate_APEC_LxF_pr_figs.jl](generate_APEC_LxF_pr_figs.jl)`                                         |
+| **Figure 3** — APEC vs APEC+entropy correction (smooth/sharp wave) | `[generate_APEC_EC_pr_figs.jl](generate_APEC_EC_pr_figs.jl)`                                           |
+| **Figures 4–5** — Transcritical shock tube                         | `[generate_pr_shock_figs.jl](generate_pr_shock_figs.jl)`                                               |
+| **Figures 6–7** — Transcritical mixing layer                       | `[trixi_transcritical_mixing.jl](trixi_transcritical_mixing.jl)`                                       |
+| **Figures 8–9** — Transcritical jet                                | `[trixi_transcritical_jet.jl](trixi_transcritical_jet.jl)`, `[plot_vtu_fields.py](plot_vtu_fields.py)` |
 
 
 
