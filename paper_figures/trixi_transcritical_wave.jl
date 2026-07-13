@@ -83,7 +83,7 @@ if eos_setup == :PengRobinson
 else
     eos = VanDerWaals(; a = 5.94768233178e-3, b = 1.72768204288e-3, gamma = 1.4, R = 1) # from Coppola
     initial_condition = initial_condition_density_wave_coppola
-    tspan = (0.0, 1.0)
+    tspan = (0.0, 2.0)
 end
 
 equations = NonIdealCompressibleEulerEquations1D(eos)

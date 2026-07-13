@@ -60,7 +60,7 @@ surface_flux = FluxPlusDissipation(volume_flux, DissipationLocalLaxFriedrichs())
 basis = LobattoLegendreBasis(3)
 
 indicator_ec = IndicatorEntropyCorrection(equations, basis; 
-                                          scaling = true, 
+                                          scaling = 1.5, 
                                           alpha_smooth=true)
 
 # @inline function inv_density_temperature(u, equations::NonIdealCompressibleEulerEquations2D{<:PengRobinson})
@@ -157,7 +157,7 @@ save_solution = SaveSolutionCallback(interval = 10000,
 
 alive_callback = AliveCallback(analysis_interval = analysis_interval)
 
-stepsize_callback = StepsizeCallback(cfl = 0.4)
+stepsize_callback = StepsizeCallback(cfl = 0.8)
 
 ###############################################################################
 # run the simulation
@@ -175,7 +175,7 @@ sol = solve(ode, ode_solver;
 
 using Plots
 plot(ScalarPlotData2D(Trixi.density, sol.u[end], semi), ylims=(-8 * h, 8 * h), dpi = 400)
-savefig("figs/polydeg$(Trixi.polydeg(basis))_transcritical_jet_rho.png")
+savefig("polydeg$(Trixi.polydeg(basis))_transcritical_jet_rho.png")
 
 # x = semi.cache.elements.node_coordinates[1, ..]
 # y = semi.cache.elements.node_coordinates[2, ..]

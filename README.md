@@ -6,22 +6,22 @@ Reproducibility repository for the paper
 
 > *Nodal discontinuous Galerkin methods for non-ideal equations of state: pressure equilibrium preservation and entropy correction*
 
-If you find these results useful, please cite the article when it is published. If you use the implementations provided here, please **also** cite this repository.
+If you find these results useful, please cite the article when it is published. If you use the implementations provided here, please also cite this repository.
 
 ## Abstract
 
-This repository contains Julia and Python scripts to reproduce the numerical experiments in the paper. The workflows are organized into two self-contained directories:
+This repository contains Julia and Python scripts to reproduce paper results. The workflows are organized into two directories:
 
 | Directory | Contents |
 |-----------|----------|
 | [`paper_figures/`](paper_figures/) | Main-text figures (Figures 1–9): van der Waals and Peng–Robinson wave/shock tests, mixing layer, and transcritical jet |
 | [`appendix_figures/`](appendix_figures/) | Appendix figures (Figures 10–11): stiffened-gas quasi-nozzle benchmarks |
 
-Each directory has its own pinned Julia environment (`Project.toml` and `Manifest.toml`). There is **no** root Julia project.
+Each directory has its own Julia environment (`Project.toml` and `Manifest.toml`). 
 
 ## Requirements
 
-- [Julia](https://julialang.org/) **1.12.6** (used to generate the committed `Manifest.toml` files)
+- Julia v1.12.6 was used to generate paper figures and the committed `Manifest.toml` files.
 - Python 3 with **NumPy**, **Matplotlib**, and **PyVista** (jet figure post-processing only)
 
 ## Quick start
