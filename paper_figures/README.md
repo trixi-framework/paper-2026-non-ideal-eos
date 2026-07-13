@@ -19,14 +19,14 @@ pip install numpy matplotlib pyvista
 ## Figure map
 
 
-| Paper figure                                                       | Script(s)                                                                                              | Primary outputs under `figs/`                                                                                                                                               |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Figure 1** — EPEC vs APEC (van der Waals density wave)           | `[generate_EPEC_vdw_figs.jl](generate_EPEC_vdw_figs.jl)`                                               | `EPEC_comparison_refinement_level_{2,3}_pressure.png` (also total-error panels `EPEC_comparison_refinement_level_*.png` and optional `EPEC_comparison_density_profile.png`) |
-| **Figure 2** — APEC vs APEC+LxF (Peng–Robinson wave)               | `[generate_APEC_LxF_pr_figs.jl](generate_APEC_LxF_pr_figs.jl)`                                         | `APEC_LxF_comparison_pressure_polydeg_{1,3,7}_refinement_level_{5,4,3}.png`                                                                                                 |
-| **Figure 3** — APEC vs APEC+entropy correction (smooth/sharp wave) | `[generate_APEC_EC_pr_figs.jl](generate_APEC_EC_pr_figs.jl)`                                           | `blending_coeff_smoothwave_polydeg_{3,7}_refinement_level_{4,3}.png`                                                                                                        |
-| **Figures 4–5** — Transcritical shock tube                         | `[generate_pr_shock_figs.jl](generate_pr_shock_figs.jl)`                                               | `transcritical_shock_{rho,p}_polydeg_{3,7}.png`, `transcritical_shock_indicator_flux_{central,terashima_etal,central_terashima_etal}.png`                                   |
-| **Figures 6–7** — Transcritical mixing layer                       | `[trixi_transcritical_mixing.jl](trixi_transcritical_mixing.jl)`                                       | `ec_polydeg3_transcritical_mixing_{rho_rho_c,gamma}.png` and `_long.png` variants (see gaps below)                                                                          |
-| **Figures 8–9** — Transcritical jet                                | `[trixi_transcritical_jet.jl](trixi_transcritical_jet.jl)`, `[plot_vtu_fields.py](plot_vtu_fields.py)` | `transcritical_jet_{rho,pressure,gamma,indicator_shock_capturing}_polydeg{3,7}.png`                                                                                         |
+| Paper figure | Script(s) |
+|--------------|-----------|
+| **Figure 1** — EPEC vs APEC (van der Waals density wave) | [`generate_EPEC_vdw_figs.jl`](generate_EPEC_vdw_figs.jl) |
+| **Figure 2** — APEC vs APEC+LxF (Peng–Robinson wave) | [`generate_APEC_LxF_pr_figs.jl`](generate_APEC_LxF_pr_figs.jl) |
+| **Figure 3** — APEC vs APEC+entropy correction (smooth/sharp wave) | [`generate_APEC_EC_pr_figs.jl`](generate_APEC_EC_pr_figs.jl) |
+| **Figures 4–5** — Transcritical shock tube | [`generate_pr_shock_figs.jl`](generate_pr_shock_figs.jl) |
+| **Figures 6–7** — Transcritical mixing layer | [`trixi_transcritical_mixing.jl`](trixi_transcritical_mixing.jl) |
+| **Figures 8–9** — Transcritical jet | [`trixi_transcritical_jet.jl`](trixi_transcritical_jet.jl), [`plot_vtu_fields.py`](plot_vtu_fields.py) |
 
 
 
@@ -98,13 +98,11 @@ Some paper figures require minor modifications of existing scripts. These are do
 
 ### Figures 6–7 (`trixi_transcritical_mixing.jl`)
 
-- By default, this script runs until final time **2t_c** to generate Figures `ec_polydeg3_transcritical_mixing_*.png`.
-- **Figure 7** requires running to 4t_c, or extending `tspan` to `(0, 0.132)` and uncommenting the `_long.png` `savefig` lines in the driver. 
-- Degree N=7 figures are not produced by the default script configuration.
+- By default, this script runs until final time **2t_c** to generate Figures `ec_polydeg3_transcritical_mixing_*.png`. Figure 7 requires running to 4t_c, or extending `tspan` to `(0, 0.132)` and uncommenting the `_long.png` `savefig` lines in the driver.
 
 
 
 ### Figures 8–9 (jet)
 
-- `[trixi_transcritical_jet.jl](trixi_transcritical_jet.jl)` is hardcoded to N = 3, CFL = 0.8, and mesh 320×160, and must be modified to run the N=7 figure. Publication PNGs for both degrees can be regenerated **without** rerunning Trixi using the committed VTU files and `plot_vtu_fields.py`.
+- `[trixi_transcritical_jet.jl](trixi_transcritical_jet.jl)` is hardcoded to N = 3, CFL = 0.8, and mesh 320×160, and must be modified to reproduce the N=7 figure. For convenience, publication PNGs for both degrees can be regenerated without rerunning the elixir using the committed VTU files and `plot_vtu_fields.py`.
 
