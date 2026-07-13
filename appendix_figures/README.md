@@ -45,15 +45,9 @@ julia --project=. AV_SGQuasiNozzle.jl
 1. Comment the default `model = MySG()` water constructor.
 2. Uncomment the steam constructor, e.g. `model = MySG(0.0, 2030e3, 1.0, 1.43, 1040.0)`.
 3. Set `N` and `M` to match the desired panel (`N=3, M=100` or `N=7, M=50`).
-4. Point the JLD2 checkpoint read to the matching saved solution file.
+4. Rerun the script to solve and plot with the updated configuration.
 
 ## Known gaps
-
-### Missing JLD2 checkpoint
-
-The quasi-nozzle plotting section opens `WaterNozzle_N3_M100.jld2` by default. This checkpoint is **not** committed (see repository `.gitignore`). Without a locally generated `.jld2` file, the script will fail at the comparison/plotting stage even though `exactWater.mat` / `exactSteam.mat` are present.
-
-To create a checkpoint, run the solver portion of [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) and uncomment/adapt the `jldsave(...)` line near the solver output.
 
 ### No automatic publication `savefig`
 
@@ -65,4 +59,4 @@ Water vs steam, polynomial degree, and mesh resolution are controlled by manual 
 
 ## Limitations
 
-End-to-end reproduction of Figures 10–11 was not re-executed during repository packaging because of the missing JLD2 checkpoint and manual save/plot steps. The committed `.mat` files support validating the analytical reference data and the exact-solution generator.
+End-to-end reproduction of Figures 10–11 still requires manual `savefig` calls and steam/water parameter toggles in [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl). The committed `.mat` files support validating the analytical reference data and the exact-solution generator.

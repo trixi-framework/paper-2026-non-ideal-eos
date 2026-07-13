@@ -1,4 +1,3 @@
-using JLD2
 using Trixi
 using MAT
 using StaticArrays
@@ -11,6 +10,7 @@ using RecursiveArrayTools
 using StaticArrays
 using Trixi
 using Plots
+using LaTeXStrings
 
 
 include("SG_utils.jl")
@@ -209,11 +209,6 @@ u = parent(sol.u[end])
 pad_nans(u) = vec([u; fill(NaN, 1, size(u, 2))])
 cell_avg(u, rd) = vec(sum(Diagonal(rd.wq) * (rd.Vq * u), dims=1) ./ 2.0)
 
-#jldsave("SteamNozzle_N7_M50.jld2"; sol.u)
-data = jldopen("WaterNozzle_N3_M100.jld2", "r")
-uf = data["u"]
-uu = parent(uf[end])
-
 # load exact solution 
 data = matread("exactWater.mat")
 d = size(data["x"])
@@ -221,9 +216,9 @@ idxs = 1:10:d[1]
 idxs = vcat(1:10:200, 205:6:304)
 
 # plot density
-plot(vec(md.x), vec(getindex.(uu, 1) ./ getindex.(uu, 4)), linewidth=4,leg=false)
+plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)), linewidth=4,leg=false)
 # plot average pressure
-plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(uu, 1) ./ getindex.(uu, 4), rd)),
+plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(u, 1) ./ getindex.(u, 4), rd)),
     linewidth=2.5, leg=false)
 #scatter!(data["x"][idxs], data["rho"][idxs],ms=3, 
 #     yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0), leg=false)
@@ -233,8 +228,8 @@ xlabel!(L"x");
 ylabel!("Density " * L"(kg/m^3)")
 
 # pressure plot 
-plot(vec(md.x), vec(pressure.(uu, equations)), linewidth=4,leg=false)
-plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(uu, equations), rd)),
+plot(vec(md.x), vec(pressure.(u, equations)), linewidth=4,leg=false)
+plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
     linewidth=2.5, leg=false)
 scatter!(data["x"][idxs], data["p"][idxs], ms=3,
     yticks=(0.5e6:-1e6:-3.65e6), leg=false)
@@ -242,8 +237,8 @@ xlabel!(L"x");
 ylabel!("Pressure (Pa)")
 
 # Ma Plot
-vel_final = getindex.(uu, 2) ./ getindex.(uu,1)
-speedsound_final = speed_of_sound.(uu, equations);
+vel_final = getindex.(u, 2) ./ getindex.(u,1)
+speedsound_final = speed_of_sound.(u, equations);
 plot(vec(md.x), vec(vel_final ./ speedsound_final),linewidth=4,leg=false)
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
     linewidth=2.5, leg=false)
