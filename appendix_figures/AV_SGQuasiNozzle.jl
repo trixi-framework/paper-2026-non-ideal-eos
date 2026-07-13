@@ -172,8 +172,10 @@ md = MeshData((VX,), EToV, rd, is_periodic = false)
  
 # default constructor is for water
 model = MySG()
+fluid = "Water"
 # this is steam
 #model = MySG(0.0, 2030e3, 1.0, 1.43, 1040.0)
+#fluid = "Steam"
 
 equations = QuasiEuler1D(model)
 
@@ -215,6 +217,9 @@ d = size(data["x"])
 idxs = 1:10:d[1]
 idxs = vcat(1:10:200, 205:6:304)
 
+mkpath("figs")
+tag = "Quasi$(fluid)N$(N)M$(M)"
+
 # plot density
 plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)), linewidth=4,leg=false)
 # plot average pressure
@@ -226,6 +231,7 @@ scatter!(data["x"][idxs], data["rho"][idxs],
     yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2, ),ms=3, leg=false)
 xlabel!(L"x");
 ylabel!("Density " * L"(kg/m^3)")
+savefig("figs/density$(tag).png")
 
 # pressure plot 
 plot(vec(md.x), vec(pressure.(u, equations)), linewidth=4,leg=false)
@@ -235,6 +241,7 @@ scatter!(data["x"][idxs], data["p"][idxs], ms=3,
     yticks=(0.5e6:-1e6:-3.65e6), leg=false)
 xlabel!(L"x");
 ylabel!("Pressure (Pa)")
+savefig("figs/pressure$(tag).png")
 
 # Ma Plot
 vel_final = getindex.(u, 2) ./ getindex.(u,1)
@@ -245,6 +252,7 @@ plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
 scatter!(data["x"][idxs], data["Mach"][idxs], ms=3,leg=false)
 xlabel!(L"x");
 ylabel!("Ma")
+savefig("figs/Mach$(tag).png")
 
 
 ## calculate change in entropy 
@@ -253,3 +261,4 @@ for (i, t) in enumerate(sol.t)
     total_entropy[i] = sum(md.wJq .* entropy.(parent(sol.u[i]), equations))
 end
 plot(sol.t, total_entropy)
+savefig("figs/entropy$(tag).png")

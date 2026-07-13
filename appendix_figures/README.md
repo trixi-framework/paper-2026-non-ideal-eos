@@ -34,29 +34,27 @@ Julia **1.12.6** was used to resolve [`Manifest.toml`](Manifest.toml).
 # Regenerate analytical .mat references (optional; committed copies are provided)
 julia --project=. AV_SGNozzleExact.jl
 
-# Interactive Plots comparison (default: water, N=3, M=100)
+# Solve and write publication PNGs (default: water, N=3, M=100)
 julia --project=. AV_SGQuasiNozzle.jl
 ```
 
-## Manual configuration for Figure 11 (steam)
+Default outputs under `figs/` (with the water/`N=3`/`M=100` settings):
 
-[`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) ships with the **water** model active. For steam panels, edit the script before running:
+- `figs/pressureQuasiWaterN3M100.png`
+- `figs/MachQuasiWaterN3M100.png`
 
-1. Comment the default `model = MySG()` water constructor.
-2. Uncomment the steam constructor, e.g. `model = MySG(0.0, 2030e3, 1.0, 1.43, 1040.0)`.
-3. Set `N` and `M` to match the desired panel (`N=3, M=100` or `N=7, M=50`).
-4. Rerun the script to solve and plot with the updated configuration.
+Pressure and Mach filenames match the manuscript naming convention (`pressureQuasi{Water|Steam}N{N}M{M}.png`, `MachQuasi{Water|Steam}N{N}M{M}.png`). Density and entropy PNGs are also written for diagnostics.
 
-## Known gaps
+## Manual configuration for Figure 10–11
 
-### No automatic publication `savefig`
+[`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) ships with the **water** model, `N = 3`, and `M = 100`. Edit before running:
 
-The appendix scripts produce **interactive Plots** windows. They do not write the publication filenames used in the manuscript (`pressureQuasiWaterN7M50.png`, `MachQuasiSteamN3M100.png`, etc.). Saving Figure 10–11 panels still requires manual `savefig` calls into `figs/`.
+1. Comment/uncomment the water vs steam `model` constructor.
+2. Set `fluid = "Water"` or `fluid = "Steam"` to match (controls output filenames).
+3. For water Figure 10, set `N = 7`, `M = 50` (paper panel).
+4. For steam Figure 11, run twice: (`N=3`, `M=100`) and (`N=7`, `M=50`).
+5. For steam, also point `matread(...)` at `exactSteam.mat` instead of `exactWater.mat`.
 
-### Steam/water toggles
+## Remaining limitations
 
-Water vs steam, polynomial degree, and mesh resolution are controlled by manual edits in [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) rather than command-line arguments.
-
-## Limitations
-
-End-to-end reproduction of Figures 10–11 still requires manual `savefig` calls and steam/water parameter toggles in [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl). The committed `.mat` files support validating the analytical reference data and the exact-solution generator.
+Water vs steam, polynomial degree, and mesh resolution still require manual edits rather than command-line arguments.
