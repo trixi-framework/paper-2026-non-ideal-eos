@@ -12,6 +12,8 @@ using Trixi
 using Plots
 using LaTeXStrings
 
+# Match paper_figures generate_*_figs.jl font sizes
+default(legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, dpi=400)
 
 include("SG_utils.jl")
 regularized_ratio(a, b) = a * b / (1e-15 + b^2)
@@ -162,20 +164,24 @@ function domain_change(x)
     return (b - a)/2 * (x + 1) +a;
 end
 
-N = 3
-M = 100
+N = parse(Int, get(ENV, "N", "3"))
+M = parse(Int, get(ENV, "M", "100"))
+fluid = get(ENV, "FLUID", "Water")
 rd = RefElemData(Line(), SBP(), N)
 (VX, ), EToV = uniform_mesh(Line(), M)
 
 VX = domain_change.(VX)
 md = MeshData((VX,), EToV, rd, is_periodic = false)
  
-# default constructor is for water
-model = MySG()
-fluid = "Water"
-# this is steam
-#model = MySG(0.0, 2030e3, 1.0, 1.43, 1040.0)
-#fluid = "Steam"
+if fluid == "Water"
+    model = MySG()
+    exact_file = "exactWater.mat"
+elseif fluid == "Steam"
+    model = MySG(0.0, 2030e3, 1.0, 1.43, 1040.0)
+    exact_file = "exactSteam.mat"
+else
+    error("Unknown FLUID=$(fluid); expected Water or Steam")
+end
 
 equations = QuasiEuler1D(model)
 
@@ -212,7 +218,7 @@ pad_nans(u) = vec([u; fill(NaN, 1, size(u, 2))])
 cell_avg(u, rd) = vec(sum(Diagonal(rd.wq) * (rd.Vq * u), dims=1) ./ 2.0)
 
 # load exact solution 
-data = matread("exactWater.mat")
+data = matread(exact_file)
 d = size(data["x"])
 idxs = 1:10:d[1]
 idxs = vcat(1:10:200, 205:6:304)
@@ -221,36 +227,38 @@ mkpath("figs")
 tag = "Quasi$(fluid)N$(N)M$(M)"
 
 # plot density
-plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)), linewidth=4,leg=false)
-# plot average pressure
+plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)), linewidth=4, leg=false)
+# plot average density
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(u, 1) ./ getindex.(u, 4), rd)),
     linewidth=2.5, leg=false)
-#scatter!(data["x"][idxs], data["rho"][idxs],ms=3, 
-#     yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0), leg=false)
-scatter!(data["x"][idxs], data["rho"][idxs], 
-    yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2, ),ms=3, leg=false)
-xlabel!(L"x");
+if fluid == "Water"
+    scatter!(data["x"][idxs], data["rho"][idxs],
+        yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2), ms=3, leg=false)
+else
+    scatter!(data["x"][idxs], data["rho"][idxs], ms=3,
+        yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0), leg=false)
+end
+xlabel!(L"x")
 ylabel!("Density " * L"(kg/m^3)")
 savefig("figs/density$(tag).png")
 
 # pressure plot 
-plot(vec(md.x), vec(pressure.(u, equations)), linewidth=4,leg=false)
+plot(vec(md.x), vec(pressure.(u, equations)), linewidth=4, leg=false)
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
     linewidth=2.5, leg=false)
-scatter!(data["x"][idxs], data["p"][idxs], ms=3,
-    yticks=(0.5e6:-1e6:-3.65e6), leg=false)
-xlabel!(L"x");
+scatter!(data["x"][idxs], data["p"][idxs], ms=3, leg=false)
+xlabel!(L"x")
 ylabel!("Pressure (Pa)")
 savefig("figs/pressure$(tag).png")
 
 # Ma Plot
 vel_final = getindex.(u, 2) ./ getindex.(u,1)
 speedsound_final = speed_of_sound.(u, equations);
-plot(vec(md.x), vec(vel_final ./ speedsound_final),linewidth=4,leg=false)
+plot(vec(md.x), vec(vel_final ./ speedsound_final), linewidth=4, leg=false)
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
     linewidth=2.5, leg=false)
-scatter!(data["x"][idxs], data["Mach"][idxs], ms=3,leg=false)
-xlabel!(L"x");
+scatter!(data["x"][idxs], data["Mach"][idxs], ms=3, leg=false)
+xlabel!(L"x")
 ylabel!("Ma")
 savefig("figs/Mach$(tag).png")
 
@@ -260,5 +268,7 @@ total_entropy = zeros(size(sol.t))
 for (i, t) in enumerate(sol.t)
     total_entropy[i] = sum(md.wJq .* entropy.(parent(sol.u[i]), equations))
 end
-plot(sol.t, total_entropy)
+plot(sol.t, total_entropy, legend=false)
+xlabel!(L"t")
+ylabel!("Entropy")
 savefig("figs/entropy$(tag).png")
