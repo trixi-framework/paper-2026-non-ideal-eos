@@ -2,7 +2,7 @@
 
 julia_version = "1.12.6"
 manifest_format = "2.0"
-project_hash = "6bd0864a3a5994853bd2c500b92c41c16ed2e866"
+project_hash = "c3829189752aa908c2638ee5da10cfc107858ac8"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "ec6be48a85c93d995563b84bff8a86bc98df45ce"
@@ -1274,11 +1274,6 @@ git-tree-sha1 = "abb0b0a6f102fc93d747b5aa4be31c82f15f538c"
 uuid = "7aca2e03-f7e2-4192-9ec8-f4ca66d597fb"
 version = "1.2.0"
 
-[[deps.NonIdealEOSPaperFigures]]
-path = "."
-uuid = "8f4e2c1a-6b3d-4e9f-a1c2-7d8e9f0a1b2c"
-version = "0.1.0"
-
 [[deps.NonlinearSolveBase]]
 deps = ["ADTypes", "Adapt", "ArrayInterface", "CommonSolve", "Compat", "ConcreteStructs", "DifferentiationInterface", "EnzymeCore", "FastClosures", "FunctionWrappers", "FunctionWrappersWrappers", "LinearAlgebra", "LogExpFunctions", "Markdown", "MaybeInplace", "PreallocationTools", "PrecompileTools", "Preferences", "Printf", "RecursiveArrayTools", "SciMLBase", "SciMLJacobianOperators", "SciMLLogging", "SciMLOperators", "SciMLStructures", "Setfield", "StaticArraysCore", "SymbolicIndexingInterface", "TimerOutputs"]
 git-tree-sha1 = "23b0da309f3a24d22d32b80b44ad414011beabfb"
@@ -2102,9 +2097,11 @@ version = "0.1.2"
 
 [[deps.Trixi]]
 deps = ["AcceleratedKernels", "Accessors", "Adapt", "Atomix", "CodeTracking", "ConstructionBase", "DataStructures", "DelimitedFiles", "DiffEqBase", "DiffEqCallbacks", "Downloads", "EllipsisNotation", "FFTW", "FillArrays", "ForwardDiff", "HDF5", "KernelAbstractions", "LinearAlgebra", "LinearMaps", "LoopVectorization", "MPI", "MuladdMacro", "Octavian", "OffsetArrays", "P4est", "Polyester", "PrecompileTools", "Preferences", "Printf", "RecipesBase", "RecursiveArrayTools", "Reexport", "SciMLBase", "SimpleUnPack", "SparseArrays", "StableRNGs", "StartUpDG", "Static", "StaticArrayInterface", "StaticArrays", "StrideArrays", "StructArrays", "SummationByPartsOperators", "T8code", "TimerOutputs", "Triangulate", "TriplotBase", "TriplotRecipes", "TrixiBase", "UUIDs"]
-git-tree-sha1 = "ad678f60beca5cdff3520e9abe3c3c94034d1ef7"
+git-tree-sha1 = "b30dd7d1f32e2bfe33f96fdd1fa41aded62feefc"
+repo-rev = "jc/indicator_ec_smoothing"
+repo-url = "https://github.com/jlchan/Trixi.jl"
 uuid = "a7f1ee26-1774-49b1-8366-f1abc58fbfcb"
-version = "0.16.25"
+version = "0.16.26-DEV"
 
     [deps.Trixi.extensions]
     TrixiAMDGPUExt = "AMDGPU"
