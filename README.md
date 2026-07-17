@@ -10,14 +10,15 @@ If you find these results useful, please cite the article when it is published. 
 
 ## Abstract
 
-This repository contains Julia and Python scripts to reproduce paper results. The workflows are organized into two directories:
+This repository contains Julia and Python scripts to reproduce paper results. The workflows are organized into the following directories:
 
 | Directory | Contents |
 |-----------|----------|
 | [`paper_figures/`](paper_figures/) | Main-text figures (Figures 1–9): van der Waals and Peng–Robinson wave/shock tests, mixing layer, and transcritical jet |
 | [`appendix_figures/`](appendix_figures/) | Appendix figures (Figures 10–11): stiffened-gas quasi-nozzle benchmarks |
+| [`appendix_B_tests/`](appendix_B_tests/) | Appendix B verification: analytic entropy-Hessian factorizations for van der Waals and Peng–Robinson (no figures) |
 
-Each directory has its own Julia environment (`Project.toml` and `Manifest.toml`). 
+Each directory has its own Julia environment (`Project.toml` and `Manifest.toml`).
 
 ## Requirements
 
@@ -45,6 +46,16 @@ julia --project=. AV_SGNozzleExact.jl
 ```
 
 See [`appendix_figures/README.md`](appendix_figures/README.md) for stiffened-gas workflows and known gaps.
+
+### Appendix B EOS tests
+
+Verifies the Appendix B entropy-Hessian factorizations \(\partial\mathbf{u}/\partial\mathbf{q}\) and \(\partial\mathbf{q}/\partial\mathbf{v}\) for Trixi’s van der Waals and Peng–Robinson EOS in 1D, including `cons2entropy ≈ ∇S`, positive-definiteness of the entropy Hessian, and flux symmetrization. Uses Trixi.jl only (no Clapeyron).
+
+```bash
+cd appendix_B_tests
+julia --project=. -e 'using Pkg; Pkg.instantiate()'
+julia --project=. test_appendix_B_eos.jl
+```
 
 ### Jet post-processing (Python)
 
