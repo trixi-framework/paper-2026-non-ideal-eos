@@ -1,5 +1,6 @@
 using Plots
 using Trixi
+using LaTeXStrings
 
 include("trixi_utils.jl")
 
@@ -23,13 +24,13 @@ trixi_include("trixi_transcritical_wave.jl",
             eos_setup = :(:VanDerWaals),
             stabilization = :(:apec),
             cfl = 0.5,
-            initial_refinement_level = :($initial_refinement_level),
+            initial_refinement_level = 2,
             volume_flux = flux_terashima_etal,
             surface_flux = flux_terashima_etal)
 pd = PlotData1D(sol)
 plot!(p, pd["rho"], label="APEC", linestyle=:dash, linewidth=2, markersize=4, dpi=400)
 
-plot!(p, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+plot!(p, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
       xlabel=L"x", ylabel=L"Density $\rho$", legend=:bottomright)
 savefig("figs/EPEC_comparison_density_profile.png")
 
@@ -99,9 +100,9 @@ for initial_refinement_level in (2, 3)
         linestyle=:dot, linewidth=2, markersize=4, dpi=400, yaxis=:log)
 
     using LaTeXStrings
-    plot!(p1, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+    plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ error", legend=:bottomright)
-    plot!(p2, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+    plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ pressure error", legend=:bottomright, ylims=(1e-12, 1e-2))
     savefig(p1, "figs/EPEC_comparison_refinement_level_$(initial_refinement_level).png")
     savefig(p2, "figs/EPEC_comparison_refinement_level_$(initial_refinement_level)_pressure.png")

@@ -34,13 +34,13 @@ for (polydeg, initial_refinement_level) in ((3, 7), (7, 6))
     pd = PlotData1D(sol.u[end], semi)
     plot!(p1, pd["rho"], linewidth=2, label="APEC + EC")
     # scatter!(p1, xc, getindex.(u_avg, 1), ms = 2, label="Cell average")
-    plot!(p1, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, legend=:topright, dpi=400)
+    plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
     savefig(p1, "figs/transcritical_shock_rho_polydeg_$(polydeg).png")
 
     # pressure 
     plot!(p2, pd["p"], linewidth=2, label="APEC + EC")
     # scatter!(p2, xc, p_avg, ms = 2, label="Cell average")
-    plot!(p2, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, legend=:topright, dpi=400)
+    plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
     savefig(p2, "figs/transcritical_shock_p_polydeg_$(polydeg).png")
 end
 
@@ -76,8 +76,8 @@ for volume_flux in (flux_central, flux_terashima_etal, flux_central_terashima_et
         legend=:topright, 
         xlims=[-0.5, 0.5],
         ylims=[0.0, 0.0425])
-    plot!(legendfontsize=10, guidefontsize=14, tickfontsize=12, dpi=400, 
-          titlefontsize=12, legend=false)
+    plot!(legendfontsize=12, guidefontsize=16, tickfontsize=14, dpi=400, 
+          titlefontsize=14, legend=false)
 
     savefig(p3, "figs/transcritical_shock_indicator_$(volume_flux).png")
 end

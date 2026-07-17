@@ -44,11 +44,11 @@ for (polydeg, initial_refinement_level) in ((3, 4), (7, 3),)
 
 
     if initial_condition == initial_condition_transcritical_wave
-      plot!(p1, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+      plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
             xlabel=L"t", ylabel=L"$L^2$ error", legend=:topleft, yaxis=:log, ylims=(1e-9, 1e-2))
       savefig(p1, "figs/blending_coeff_smoothwave_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
     else
-      plot!(p1, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+      plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
             xlabel=L"t", ylabel=L"$L^2$ error", legend=:topleft, yaxis=:log, ylims=(1e-4, 1e1))
       savefig(p1, "figs/blending_coeff_sharpwave_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
     end

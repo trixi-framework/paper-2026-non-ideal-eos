@@ -60,9 +60,9 @@ for (polydeg, initial_refinement_level) in ((1, 5), (3, 4), (7, 3))
         linestyle=:dash, linewidth=2, markersize=4, dpi=400)
 
     using LaTeXStrings
-    plot!(p1, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+    plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ error", legend=:topleft)
-    plot!(p2, legendfontsize=10, guidefontsize=12, tickfontsize=10, titlefontsize=12, 
+    plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ pressure error", yaxis=:log, ylims = (1e-8, 1e-1), 
         legend=:topleft)
     savefig(p1, "figs/APEC_LxF_comparison_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
