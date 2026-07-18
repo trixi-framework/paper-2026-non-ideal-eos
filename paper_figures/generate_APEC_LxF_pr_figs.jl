@@ -4,7 +4,6 @@ using Trixi
 include("trixi_utils.jl")
 
 initial_condition = initial_condition_transcritical_wave
-# initial_condition = initial_condition_transcritical_wave_sharp
 
 for (polydeg, initial_refinement_level) in ((1, 5), (3, 4), (7, 3))
 
@@ -63,8 +62,8 @@ for (polydeg, initial_refinement_level) in ((1, 5), (3, 4), (7, 3))
     plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ error", legend=:topleft)
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
-        xlabel=L"t", ylabel=L"$L^2$ pressure error", yaxis=:log, ylims = (1e-8, 1e-1), 
-        legend=:topleft)
+        xlabel=L"t", ylabel=L"$L^2$ pressure error", yaxis=:log, ylims = (1e-8, 1e-0), 
+        legend=:bottomright)
     savefig(p1, "figs/APEC_LxF_comparison_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
     savefig(p2, "figs/APEC_LxF_comparison_pressure_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
 end

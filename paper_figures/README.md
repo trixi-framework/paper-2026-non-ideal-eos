@@ -23,7 +23,7 @@ pip install numpy matplotlib pyvista
 | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
 | **Figure 1** — EPEC vs APEC (van der Waals density wave)           | `[generate_EPEC_vdw_figs.jl](generate_EPEC_vdw_figs.jl)`                                               |
 | **Figure 2** — APEC vs APEC+LxF (Peng–Robinson wave)               | `[generate_APEC_LxF_pr_figs.jl](generate_APEC_LxF_pr_figs.jl)`                                         |
-| **Figure 3** — APEC vs APEC+entropy correction (smooth/sharp wave) | `[generate_APEC_EC_pr_figs.jl](generate_APEC_EC_pr_figs.jl)`                                           |
+| **Figure 3** — APEC vs APEC+entropy correction (smooth/sharp wave) | `[generate_APEC_EC_pr_figs.jl](generate_APEC_EC_pr_figs.jl)` (loops over smooth and sharp initial conditions) |
 | **Figures 4–5** — Transcritical shock tube                         | `[generate_pr_shock_figs.jl](generate_pr_shock_figs.jl)`                                               |
 | **Figures 6–7** — Transcritical mixing layer                       | `[trixi_transcritical_mixing.jl](trixi_transcritical_mixing.jl)`                                       |
 | **Figures 8–9** — Transcritical jet                                | `[trixi_transcritical_jet.jl](trixi_transcritical_jet.jl)`, `[plot_vtu_fields.py](plot_vtu_fields.py)` |
@@ -54,7 +54,7 @@ julia --project=. generate_EPEC_vdw_figs.jl
 # Figure 2
 julia --project=. generate_APEC_LxF_pr_figs.jl
 
-# Figure 3 (smooth wave; see manual step for sharp panels)
+# Figure 3 (smooth and sharp wave panels)
 julia --project=. generate_APEC_EC_pr_figs.jl
 
 # Figures 4–5
@@ -89,12 +89,6 @@ python plot_vtu_fields.py
 ## Known discrepancies and manual steps
 
 Some paper figures require minor modifications of existing scripts. These are documented below.
-
-### Figure 3 (`generate_APEC_EC_pr_figs.jl`)
-
-- Sharp-wave figures (`blending_coeff_sharpwave_*.png`) require uncommenting `initial_condition_transcritical_wave_sharp` at the top of the script and rerunning.
-
-
 
 ### Figures 6–7 (`trixi_transcritical_mixing.jl`)
 
