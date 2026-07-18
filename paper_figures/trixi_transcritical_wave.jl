@@ -26,7 +26,7 @@ function initial_condition_transcritical_wave(x, t,
     rho = 0.5f0 * (rho_min + rho_max) +
           0.5f0 * (rho_max - rho_min) * sin(k_wave * pi * (x[1] - v1 * t))
     p = 5e6 # transcritical
-    p = 5e7 # supercritical
+    # p = 5e7 # supercritical
 
     V = inv(rho)
 
