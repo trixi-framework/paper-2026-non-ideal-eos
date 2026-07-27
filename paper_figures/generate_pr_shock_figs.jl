@@ -8,11 +8,14 @@ using Plots
 using LaTeXStrings
 include("trixi_utils.jl")
 
+# run to define sol/semi before the loop (avoids world-age issues)
+include("trixi_transcritical_shock.jl")  
+
 for (polydeg, initial_refinement_level) in ((3, 7), (7, 6))
     # plot APEC-EC vs APEC-only solution
     trixi_include("trixi_transcritical_shock.jl",
                     volume_flux = flux_terashima_etal,
-                    volume_integral = volume_integral_apec,
+                    volume_integral = :(volume_integral_apec),
                     polydeg = polydeg,
                     initial_refinement_level = initial_refinement_level)
 
