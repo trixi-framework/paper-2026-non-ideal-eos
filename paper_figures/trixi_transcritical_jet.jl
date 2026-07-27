@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using OrdinaryDiffEqSSPRK, OrdinaryDiffEqLowStorageRK
 using Trixi
 using Trixi: ForwardDiff
@@ -175,7 +180,7 @@ sol = solve(ode, ode_solver;
 
 using Plots
 plot(ScalarPlotData2D(Trixi.density, sol.u[end], semi), ylims=(-8 * h, 8 * h), dpi = 400)
-savefig("polydeg$(Trixi.polydeg(basis))_transcritical_jet_rho.png")
+savefig(joinpath(FIGDIR, "polydeg$(Trixi.polydeg(basis))_transcritical_jet_rho.png"))
 
 # x = semi.cache.elements.node_coordinates[1, ..]
 # y = semi.cache.elements.node_coordinates[2, ..]

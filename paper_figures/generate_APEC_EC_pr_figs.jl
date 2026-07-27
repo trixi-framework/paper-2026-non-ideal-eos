@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using Plots
 using Trixi
 using LaTeXStrings
@@ -44,11 +49,11 @@ for initial_condition in (initial_condition_transcritical_wave, initial_conditio
       if initial_condition == initial_condition_transcritical_wave
         plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
               xlabel=L"t", ylabel=L"$L^2$ error", legend=:topleft, yaxis=:log, ylims=(1e-9, 1e-1))
-        savefig(p1, "figs/blending_coeff_smoothwave_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
+        savefig(p1, joinpath(FIGDIR, "blending_coeff_smoothwave_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png"))
       else
         plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
               xlabel=L"t", ylabel=L"$L^2$ error", legend=:topleft, yaxis=:log, ylims=(1e-4, 1e1))
-        savefig(p1, "figs/blending_coeff_sharpwave_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
+        savefig(p1, joinpath(FIGDIR, "blending_coeff_sharpwave_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png"))
       end
 
   end

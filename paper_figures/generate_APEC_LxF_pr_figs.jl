@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using Plots
 using Trixi
 
@@ -64,8 +69,7 @@ for (polydeg, initial_refinement_level) in ((1, 5), (3, 4), (7, 3))
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ pressure error", yaxis=:log, ylims = (1e-8, 1e-0), 
         legend=:bottomright)
-    savefig(p1, "figs/APEC_LxF_comparison_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
-    savefig(p2, "figs/APEC_LxF_comparison_pressure_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png")
+    savefig(p1, joinpath(FIGDIR, "APEC_LxF_comparison_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png"))
+    savefig(p2, joinpath(FIGDIR, "APEC_LxF_comparison_pressure_polydeg_$(polydeg)_refinement_level_$(initial_refinement_level).png"))
 end
-
 

@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using Trixi
 using Plots
 include("trixi_utils.jl")
@@ -35,13 +40,13 @@ for (polydeg, initial_refinement_level) in ((3, 7), (7, 6))
     plot!(p1, pd["rho"], linewidth=2, label="APEC + EC")
     # scatter!(p1, xc, getindex.(u_avg, 1), ms = 2, label="Cell average")
     plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
-    savefig(p1, "figs/transcritical_shock_rho_polydeg_$(polydeg).png")
+    savefig(p1, joinpath(FIGDIR, "transcritical_shock_rho_polydeg_$(polydeg).png"))
 
     # pressure 
     plot!(p2, pd["p"], linewidth=2, label="APEC + EC")
     # scatter!(p2, xc, p_avg, ms = 2, label="Cell average")
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
-    savefig(p2, "figs/transcritical_shock_p_polydeg_$(polydeg).png")
+    savefig(p2, joinpath(FIGDIR, "transcritical_shock_p_polydeg_$(polydeg).png"))
 end
 
 # blending coefficient plots
@@ -79,6 +84,6 @@ for volume_flux in (flux_central, flux_terashima_etal, flux_central_terashima_et
     plot!(legendfontsize=12, guidefontsize=16, tickfontsize=14, dpi=400, 
           titlefontsize=14, legend=false)
 
-    savefig(p3, "figs/transcritical_shock_indicator_$(volume_flux).png")
+    savefig(p3, joinpath(FIGDIR, "transcritical_shock_indicator_$(volume_flux).png"))
 end
 # plot(p1, p2)

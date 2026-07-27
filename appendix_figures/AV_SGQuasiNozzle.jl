@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using Trixi
 using MAT
 using StaticArrays
@@ -240,7 +245,7 @@ else
 end
 xlabel!(L"x")
 ylabel!("Density " * L"(kg/m^3)")
-savefig("figs/density$(tag).png")
+savefig(joinpath(FIGDIR, "density$(tag).png"))
 
 # pressure plot 
 plot(vec(md.x), vec(pressure.(u, equations)), linewidth=4, leg=false)
@@ -249,7 +254,7 @@ plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
 scatter!(data["x"][idxs], data["p"][idxs], ms=3, leg=false)
 xlabel!(L"x")
 ylabel!("Pressure (Pa)")
-savefig("figs/pressure$(tag).png")
+savefig(joinpath(FIGDIR, "pressure$(tag).png"))
 
 # Ma Plot
 vel_final = getindex.(u, 2) ./ getindex.(u,1)
@@ -260,7 +265,7 @@ plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
 scatter!(data["x"][idxs], data["Mach"][idxs], ms=3, leg=false)
 xlabel!(L"x")
 ylabel!("Ma")
-savefig("figs/Mach$(tag).png")
+savefig(joinpath(FIGDIR, "Mach$(tag).png"))
 
 
 ## calculate change in entropy 
@@ -271,4 +276,4 @@ end
 plot(sol.t, total_entropy, legend=false)
 xlabel!(L"t")
 ylabel!("Entropy")
-savefig("figs/entropy$(tag).png")
+savefig(joinpath(FIGDIR, "entropy$(tag).png"))

@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using OrdinaryDiffEqLowStorageRK
 using OrdinaryDiffEqSSPRK
 using Trixi
@@ -186,18 +191,18 @@ if save_plots
     pd = PlotData2D(sol.u[end], semi; solution_variables = cons2relative)
     p1 = plot(pd["rho / rho_c"], clims=(0.5, 2.5), dpi=400)
     if volume_integral == volume_integral_apec
-        savefig(p1, "figs/apec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_rho_rho_c.png")
+        savefig(p1, joinpath(FIGDIR, "apec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_rho_rho_c.png"))
     else
-        savefig(p1, "figs/ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_rho_rho_c.png")
-        # savefig(p1, "figs/ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_rho_rho_c_long.png")
+        savefig(p1, joinpath(FIGDIR, "ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_rho_rho_c.png"))
+        # savefig(p1, joinpath(FIGDIR, "ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_rho_rho_c_long.png"))
     end
 
     p2 = plot(ScalarPlotData2D(gamma, sol.u[end], semi), dpi=400)
     if volume_integral == volume_integral_apec
-        savefig(p2, "figs/apec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_gamma.png")
+        savefig(p2, joinpath(FIGDIR, "apec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_gamma.png"))
     else
-        savefig(p2, "figs/ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_gamma.png")
-        # savefig(p2, "figs/ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_gamma_long.png")
+        savefig(p2, joinpath(FIGDIR, "ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_gamma.png"))
+        # savefig(p2, joinpath(FIGDIR, "ec_polydeg$(Trixi.polydeg(basis))_transcritical_mixing_gamma_long.png"))
     end
 
 end # save_plots

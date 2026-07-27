@@ -1,3 +1,8 @@
+const FIGDIR = joinpath(@__DIR__, "figs")
+if !isdir(FIGDIR)
+    mkpath(FIGDIR)
+end
+
 using Plots
 using Trixi
 using LaTeXStrings
@@ -32,7 +37,7 @@ plot!(p, pd["rho"], label="APEC", linestyle=:dash, linewidth=2, markersize=4, dp
 
 plot!(p, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
       xlabel=L"x", ylabel=L"Density $\rho$", legend=:bottomright)
-savefig("figs/EPEC_comparison_density_profile.png")
+savefig(joinpath(FIGDIR, "EPEC_comparison_density_profile.png"))
 
 
 # calculate errors over time
@@ -104,7 +109,7 @@ for initial_refinement_level in (2, 3)
         xlabel=L"t", ylabel=L"$L^2$ error", legend=:bottomright)
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, 
         xlabel=L"t", ylabel=L"$L^2$ pressure error", legend=:bottomright, ylims=(1e-12, 1e-2))
-    savefig(p1, "figs/EPEC_comparison_refinement_level_$(initial_refinement_level).png")
-    savefig(p2, "figs/EPEC_comparison_refinement_level_$(initial_refinement_level)_pressure.png")
+    savefig(p1, joinpath(FIGDIR, "EPEC_comparison_refinement_level_$(initial_refinement_level).png"))
+    savefig(p2, joinpath(FIGDIR, "EPEC_comparison_refinement_level_$(initial_refinement_level)_pressure.png"))
 
 end
