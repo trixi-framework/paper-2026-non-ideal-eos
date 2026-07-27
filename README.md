@@ -6,9 +6,46 @@ Reproducibility repository for the paper
 
 > *Nodal discontinuous Galerkin methods for non-ideal equations of state: pressure equilibrium preservation and entropy correction*
 
-If you find these results useful, please cite the article when it is published. If you use the implementations provided here, please also cite this repository.
+If you find these results useful, please cite the article
+
+```bibtex
+@online{chan2026nodal,
+  title={Nodal discontinuous {G}alerkin methods for non-ideal equations of state: pressure equilibrium preservation and entropy correction},
+  author={Chan, Jesse and Ranocha, Hendrik and Park, Raymond and Lampert, Joshua and Ching, Eric and Edoh, Ayaboe},
+  year={2026},
+  month={8},
+  eprint={TODO},
+  eprinttype={arxiv},
+  eprintclass={math.NA}
+}
+```
+
+If you use the implementations provided here, please also cite this repository as
+
+```bibtex
+@misc{chan2026nodalRepro,
+  title={Reproducibility repository for
+         "{N}odal discontinuous {G}alerkin methods for non-ideal equations of state: pressure equilibrium preservation and entropy correction"},
+  author={Chan, Jesse and Ranocha, Hendrik and Park, Raymond and Lampert, Joshua and Ching, Eric and Edoh, Ayaboe},
+  year={2026},
+  howpublished={\url{https://github.com/trixi-framework/paper-2026-non-ideal-eos}},
+  doi={TODO}
+}
+```
+
 
 ## Abstract
+
+Structure-preserving discontinuous Galerkin (DG) methods typically improve the robustness of high order numerical methods for simulations of real fluids.
+In addition to conservation, key structures include the preservation of pressure equilibrium and satisfaction of at least one entropy inequality.
+In this work, we investigate conservative discretizations using exactly pressure equilibrium conserving (EPEC) and approximately pressure equilibrium conserving (APEC) flux differencing DG formulations, as well as entropy stable formulations through the use of minimally dissipative corrections for non-ideal equations of state (EOS).
+
+We introduce an analysis of EPEC schemes, and compare the performance of two EPEC fluxes.
+We also analyze APEC DG schemes and show that the incorporation of dissipative interface penalization terms does not significantly increase pressure equilibrium errors, especially at higher orders of approximation.
+Finally, we observe that when combined with APEC flux differencing formulations, entropy correction improves robustness for under-resolved solutions and long-time simulations.
+
+
+## Numerical experiments
 
 This repository contains Julia and Python scripts to reproduce paper results. The workflows are organized into the following directories:
 
