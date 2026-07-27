@@ -107,7 +107,7 @@ for initial_refinement_level in (2, 3)
     plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14,
         xlabel=L"t", ylabel=L"$L^2$ error", legend=:bottomright)
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14,
-        xlabel=L"t", ylabel=L"$L^2$ pressure error", legend=:bottomright, ylims=(1e-12, 1e-2))
+        xlabel=L"t", ylabel=L"$L^2$ pressure error", legend=:bottomright, ylims=(1e-15, 1e-2))
     savefig(p1, joinpath(FIGDIR, "EPEC_comparison_refinement_level_$(initial_refinement_level).png"))
     savefig(p2, joinpath(FIGDIR, "EPEC_comparison_refinement_level_$(initial_refinement_level)_pressure.png"))
 
