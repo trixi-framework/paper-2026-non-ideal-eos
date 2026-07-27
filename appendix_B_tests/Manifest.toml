@@ -2,7 +2,7 @@
 
 julia_version = "1.12.6"
 manifest_format = "2.0"
-project_hash = "ca480b73c407f7cf9a661aa0d1c9c5245d243703"
+project_hash = "a360b4405e941a20a07143d35e4dcc6b978124a8"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "ec6be48a85c93d995563b84bff8a86bc98df45ce"
@@ -964,12 +964,6 @@ deps = ["DelimitedFiles", "LinearAlgebra", "SpecialFunctions", "StaticArrays"]
 git-tree-sha1 = "abb0b0a6f102fc93d747b5aa4be31c82f15f538c"
 uuid = "7aca2e03-f7e2-4192-9ec8-f4ca66d597fb"
 version = "1.2.0"
-
-[[deps.NonIdealEOSAppendixBTests]]
-deps = ["ForwardDiff", "StaticArrays", "Trixi"]
-path = "."
-uuid = "c4e8a1f2-3b5d-4e7a-9c0d-1a2b3c4d5e6f"
-version = "0.1.0"
 
 [[deps.NonlinearSolveBase]]
 deps = ["ADTypes", "Adapt", "ArrayInterface", "CommonSolve", "Compat", "ConcreteStructs", "DifferentiationInterface", "EnzymeCore", "FastClosures", "FunctionWrappers", "FunctionWrappersWrappers", "LinearAlgebra", "LogExpFunctions", "Markdown", "MaybeInplace", "PreallocationTools", "PrecompileTools", "Preferences", "Printf", "RecursiveArrayTools", "SciMLBase", "SciMLJacobianOperators", "SciMLLogging", "SciMLOperators", "SciMLStructures", "Setfield", "StaticArraysCore", "SymbolicIndexingInterface", "TimerOutputs"]
