@@ -30,6 +30,14 @@ Julia **1.12.6** was used to resolve [`Manifest.toml`](Manifest.toml).
 
 ## Run commands
 
+Exact reference plus the default quasi-nozzle solve (water, `N=3`, `M=100`) can be run together:
+
+```bash
+julia --project=. --threads=auto run_generate_figs.jl
+```
+
+Or individually:
+
 ```bash
 # Regenerate analytical .mat references (optional; committed copies are provided)
 julia --project=. AV_SGNozzleExact.jl

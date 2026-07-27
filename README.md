@@ -80,10 +80,10 @@ See [`paper_figures/README.md`](paper_figures/README.md) for per-figure commands
 ```bash
 cd appendix_figures
 julia --project=. -e 'using Pkg; Pkg.instantiate()'
-julia --project=. AV_SGNozzleExact.jl
+julia --project=. --threads=auto run_generate_figs.jl   # exact .mat + default water quasi-nozzle
 ```
 
-See [`appendix_figures/README.md`](appendix_figures/README.md) for stiffened-gas workflows and known gaps.
+See [`appendix_figures/README.md`](appendix_figures/README.md) for stiffened-gas workflows, other Figure 10–11 panels, and known gaps.
 
 ### Appendix B EOS tests
 
