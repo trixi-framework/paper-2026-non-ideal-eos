@@ -41,13 +41,13 @@ for (polydeg, initial_refinement_level) in ((3, 7), (7, 6))
 
     # density
     pd = PlotData1D(sol.u[end], semi)
-    plot!(p1, pd["rho"], linewidth=2, label="APEC + EC")
+    plot!(p1, pd["rho"], linewidth=2, linestyle = :dash, label="APEC + EC")
     # scatter!(p1, xc, getindex.(u_avg, 1), ms = 2, label="Cell average")
     plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
     savefig(p1, joinpath(FIGDIR, "transcritical_shock_rho_polydeg_$(polydeg).png"))
 
     # pressure
-    plot!(p2, pd["p"], linewidth=2, label="APEC + EC")
+    plot!(p2, pd["p"], linewidth=2, linestyle = :dash, label="APEC + EC")
     # scatter!(p2, xc, p_avg, ms = 2, label="Cell average")
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
     savefig(p2, joinpath(FIGDIR, "transcritical_shock_p_polydeg_$(polydeg).png"))
