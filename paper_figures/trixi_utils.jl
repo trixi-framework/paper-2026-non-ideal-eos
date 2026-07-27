@@ -235,12 +235,12 @@ end
         # Exactly PEP: use rho_avg = [rho^2 * (de/drho)_p] / [drho_e_internal_drho_p]
         num = rho_squared_de_drho_p_rr - rho_squared_de_drho_p_ll
         denom = drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll
-        # if abs(denom) < 1e-8
-        #     rho_lambda_avg = rho_avg
-        # else
-        #     rho_lambda_avg = num / denom
-        # end
-        rho_lambda_avg = Trixi.regularized_ratio(num, denom)
+        if abs(denom) < 100 * eps(typeof(denom))
+            rho_lambda_avg = rho_avg
+        else
+            rho_lambda_avg = num / denom
+        end
+        # rho_lambda_avg = Trixi.regularized_ratio(num, denom)
 
 
         # drho_e_internal_drho_p_avg * f_rho - v1_avg * 0.5f0 * (rho_squared_de_drho_p_ll + rho_squared_de_drho_p_rr)
