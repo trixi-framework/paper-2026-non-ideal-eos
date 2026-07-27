@@ -223,9 +223,6 @@ cell_avg(u, rd) = vec(sum(Diagonal(rd.wq) * (rd.Vq * u), dims=1) ./ 2.0)
 
 # load exact solution
 data = matread(exact_file)
-d = size(data["x"])
-idxs = 1:10:d[1]
-idxs = vcat(1:10:200, 205:6:304)
 
 mkpath("figs")
 tag = "Quasi$(fluid)N$(N)M$(M)"
@@ -234,14 +231,14 @@ tag = "Quasi$(fluid)N$(N)M$(M)"
 plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)),
      linewidth=4, linestyle=:solid, label="DG")
 # plot average density (no legend entry)
-plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(u, 1) ./ getindex.(u, 4), rd)),
+scatter!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(u, 1) ./ getindex.(u, 4), rd)),
       linewidth=2.5, label="")
 if fluid == "Water"
-    plot!(data["x"][idxs], data["rho"][idxs],
+    plot!(data["x"], data["rho"],
           linewidth=3, linestyle=:dash, label="Analytical",
           yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2))
 else
-    plot!(data["x"][idxs], data["rho"][idxs],
+    plot!(data["x"], data["rho"],
           linewidth=3, linestyle=:dash, label="Analytical",
           yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0))
 end
@@ -252,9 +249,9 @@ savefig(joinpath(FIGDIR, "density$(tag).png"))
 # pressure plot
 plot(vec(md.x), vec(pressure.(u, equations)),
      linewidth=4, linestyle=:solid, label="DG")
-plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
+scatter!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
       linewidth=2.5, label="")
-plot!(data["x"][idxs], data["p"][idxs],
+plot!(data["x"], data["p"],
       linewidth=3, linestyle=:dash, label="Analytical")
 xlabel!(L"x")
 ylabel!("Pressure (Pa)")
@@ -265,9 +262,9 @@ vel_final = getindex.(u, 2) ./ getindex.(u,1)
 speedsound_final = speed_of_sound.(u, equations);
 plot(vec(md.x), vec(vel_final ./ speedsound_final),
      linewidth=4, linestyle=:solid, label="DG")
-plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
+scatter!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
       linewidth=2.5, label="")
-plot!(data["x"][idxs], data["Mach"][idxs],
+plot!(data["x"], data["Mach"],
       linewidth=3, linestyle=:dash, label="Analytical")
 xlabel!(L"x")
 ylabel!("Ma")
