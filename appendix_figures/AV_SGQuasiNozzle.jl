@@ -149,7 +149,7 @@ function rhs!(du_voa, u_voa, params, t)
     dissipation = sum(rd.M * (md.J .* dot.(sigma, theta)), dims=1)
     delta = sum(dot.(v, rd.M * du), dims=1) + sum((@. psi(uM, equations) * md.nx), dims=1)
     epsilon = vec(@. regularized_ratio(-min(0, delta), dissipation))
-    epsilon .= 0.0
+
     sigma *= Diagonal(epsilon)
     sigmaM = rd.Vf * sigma
     sigmaP = sigmaM[md.mapP]
