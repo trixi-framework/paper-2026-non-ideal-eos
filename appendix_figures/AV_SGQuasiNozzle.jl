@@ -231,26 +231,31 @@ mkpath("figs")
 tag = "Quasi$(fluid)N$(N)M$(M)"
 
 # plot density
-plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)), linewidth=4, leg=false)
-# plot average density
+plot(vec(md.x), vec(getindex.(u, 1) ./ getindex.(u, 4)),
+     linewidth=4, linestyle=:solid, label="DG")
+# plot average density (no legend entry)
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(u, 1) ./ getindex.(u, 4), rd)),
-    linewidth=2.5, leg=false)
+      linewidth=2.5, label="")
 if fluid == "Water"
-    scatter!(data["x"][idxs], data["rho"][idxs],
-        yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2), ms=3, leg=false)
+    plot!(data["x"][idxs], data["rho"][idxs],
+          linewidth=3, linestyle=:dash, label="Analytical",
+          yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2))
 else
-    scatter!(data["x"][idxs], data["rho"][idxs], ms=3,
-        yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0), leg=false)
+    plot!(data["x"][idxs], data["rho"][idxs],
+          linewidth=3, linestyle=:dash, label="Analytical",
+          yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0))
 end
 xlabel!(L"x")
 ylabel!("Density " * L"(kg/m^3)")
 savefig(joinpath(FIGDIR, "density$(tag).png"))
 
 # pressure plot
-plot(vec(md.x), vec(pressure.(u, equations)), linewidth=4, leg=false)
+plot(vec(md.x), vec(pressure.(u, equations)),
+     linewidth=4, linestyle=:solid, label="DG")
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
-    linewidth=2.5, leg=false)
-scatter!(data["x"][idxs], data["p"][idxs], ms=3, leg=false)
+      linewidth=2.5, label="")
+plot!(data["x"][idxs], data["p"][idxs],
+      linewidth=3, linestyle=:dash, label="Analytical")
 xlabel!(L"x")
 ylabel!("Pressure (Pa)")
 savefig(joinpath(FIGDIR, "pressure$(tag).png"))
@@ -258,10 +263,12 @@ savefig(joinpath(FIGDIR, "pressure$(tag).png"))
 # Ma Plot
 vel_final = getindex.(u, 2) ./ getindex.(u,1)
 speedsound_final = speed_of_sound.(u, equations);
-plot(vec(md.x), vec(vel_final ./ speedsound_final), linewidth=4, leg=false)
+plot(vec(md.x), vec(vel_final ./ speedsound_final),
+     linewidth=4, linestyle=:solid, label="DG")
 plot!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
-    linewidth=2.5, leg=false)
-scatter!(data["x"][idxs], data["Mach"][idxs], ms=3, leg=false)
+      linewidth=2.5, label="")
+plot!(data["x"][idxs], data["Mach"][idxs],
+      linewidth=3, linestyle=:dash, label="Analytical")
 xlabel!(L"x")
 ylabel!("Ma")
 savefig(joinpath(FIGDIR, "Mach$(tag).png"))
