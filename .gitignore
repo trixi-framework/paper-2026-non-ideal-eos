@@ -30,3 +30,5 @@ JuliaLocalPreferences.toml
 paper_figures/figs/
 
 paper_figures/out/
+
+.DS_Store
