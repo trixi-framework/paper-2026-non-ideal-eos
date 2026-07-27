@@ -1,6 +1,7 @@
 using Trixi
 using Trixi: StaticArrays
 using .StaticArrays: @SMatrix
+using LinearAlgebra: norm
 
 function temperature_pV(p, V, eos::IdealGas)
     (; R) = eos
@@ -66,8 +67,8 @@ function calc_barth_matrices(u_ll, u_rr, equations)
     # V_ll, _, T_ll = cons2thermo(u_ll, equations)
     # V_rr, _, T_rr = cons2thermo(u_rr, equations)
     # drhoe_drho_p_ll = Trixi.drho_e_internal_drho_at_const_p(V_ll, T_ll, eos)
-    # drhoe_drho_p_rr = Trixi.drho_e_internal_drho_at_const_p(V_rr, T_rr, eos)    
-    # drhoe_drho_p = 2 * drhoe_drho_p_ll * drhoe_drho_p_rr / (drhoe_drho_p_ll + drhoe_drho_p_rr) # harmonic mean 
+    # drhoe_drho_p_rr = Trixi.drho_e_internal_drho_at_const_p(V_rr, T_rr, eos)
+    # drhoe_drho_p = 2 * drhoe_drho_p_ll * drhoe_drho_p_rr / (drhoe_drho_p_ll + drhoe_drho_p_rr) # harmonic mean
     # drhoe_drho_p = 0.5 * (drhoe_drho_p_ll + drhoe_drho_p_rr)
 
     R = @SMatrix [1 1 1;
@@ -89,7 +90,7 @@ function calc_barth_matrices(u_ll, u_rr, equations)
 
     # code hardening to avoid d_2 ≤ 0
     D_eps = SVector(D.diag[1], max(1e-6, D.diag[2]), D.diag[3])
-    R̃ = R * Diagonal(inv.(sqrt.(D_eps))) 
+    R̃ = R * Diagonal(inv.(sqrt.(D_eps)))
 
     lam = SVector(v1 - c, v1, v1 + c)
     Λplus = Diagonal(abs.(lam))
@@ -100,7 +101,7 @@ end
     v_ll = cons2entropy(u_ll, equations)
     v_rr = cons2entropy(u_rr, equations)
     dv = v_rr - v_ll
-    R, Lambda = calc_barth_matrices(u_ll, u_rr, equations)    
+    R, Lambda = calc_barth_matrices(u_ll, u_rr, equations)
     # Lambda = max_abs_speed(u_ll, u_rr, 1, equations) # scalar dissipation
     return -0.5f0 * R * Lambda * R' * dv
 end
@@ -113,7 +114,7 @@ end
 
     # p_ll = pressure(u_ll, equations)
     # p_rr = pressure(u_rr, equations)
-    # sensor_pressure = min(1, 2 * abs(p_ll - p_rr) / min(p_ll, p_rr) + 0.1)    
+    # sensor_pressure = min(1, 2 * abs(p_ll - p_rr) / min(p_ll, p_rr) + 0.1)
 
     # make sensor proportional to [ρ] with some small fallback
     rho_ll = Trixi.density(u_ll, equations)
@@ -178,11 +179,11 @@ end
     rho_e_v1_avg = (rho_e_internal_avg + drho_e_internal_drho_p_avg * rho_avg - drho_e_internal_drho_p_rho_avg) *
                    v1_avg
 
-    # check Ranocha condition    
+    # check Ranocha condition
     check_condition = false
     if check_condition == true
-        lhs = (drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll) * rho_avg 
-        rhs = (drho_e_internal_drho_p_rr * rho_rr - drho_e_internal_drho_p_ll * rho_ll) - 
+        lhs = (drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll) * rho_avg
+        rhs = (drho_e_internal_drho_p_rr * rho_rr - drho_e_internal_drho_p_ll * rho_ll) -
             (rho_e_internal_rr - rho_e_internal_ll)
         @show lhs - rhs
     end
@@ -233,7 +234,7 @@ end
     if use_EPEP == true
         # Exactly PEP: use rho_avg = [rho^2 * (de/drho)_p] / [drho_e_internal_drho_p]
         num = rho_squared_de_drho_p_rr - rho_squared_de_drho_p_ll
-        denom = drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll    
+        denom = drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll
         # if abs(denom) < 1e-8
         #     rho_lambda_avg = rho_avg
         # else
@@ -244,27 +245,27 @@ end
 
         # drho_e_internal_drho_p_avg * f_rho - v1_avg * 0.5f0 * (rho_squared_de_drho_p_ll + rho_squared_de_drho_p_rr)
         f_rho = rho_lambda_avg * v1_avg
-        rho_e_internal_corrected = 
-            (drho_e_internal_drho_p_avg * rho_lambda_avg - rho_squared_de_drho_p_avg) 
+        rho_e_internal_corrected =
+            (drho_e_internal_drho_p_avg * rho_lambda_avg - rho_squared_de_drho_p_avg)
     else
         f_rho = rho_avg * v1_avg
-        rho_e_internal_corrected = 
-            (drho_e_internal_drho_p_avg * rho_avg - rho_squared_de_drho_p_avg) 
+        rho_e_internal_corrected =
+            (drho_e_internal_drho_p_avg * rho_avg - rho_squared_de_drho_p_avg)
         rho_lambda_avg = rho_avg # for checking condition
     end
 
-    # check Ranocha condition    
+    # check Ranocha condition
     check_condition = false
     if check_condition == true
-        # @show (drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll) * rho_lambda_avg 
-        # @show (drho_e_internal_drho_p_rr * rho_rr - drho_e_internal_drho_p_ll * rho_ll) - 
+        # @show (drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll) * rho_lambda_avg
+        # @show (drho_e_internal_drho_p_rr * rho_rr - drho_e_internal_drho_p_ll * rho_ll) -
         #     (rho_e_internal_rr - rho_e_internal_ll)
-        lhs = (drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll) * rho_lambda_avg 
-        rhs = (drho_e_internal_drho_p_rr * rho_rr - drho_e_internal_drho_p_ll * rho_ll) - 
+        lhs = (drho_e_internal_drho_p_rr - drho_e_internal_drho_p_ll) * rho_lambda_avg
+        rhs = (drho_e_internal_drho_p_rr * rho_rr - drho_e_internal_drho_p_ll * rho_ll) -
             (rho_e_internal_rr - rho_e_internal_ll)
         @show lhs - rhs
     end
-    
+
     f_rho_v1 = f_rho * v1_avg + p_avg
     f_rho_E = rho_e_internal_corrected * v1_avg + f_rho * 0.5f0 * (v1_ll * v1_rr) + p_v1_avg
 
@@ -277,7 +278,7 @@ function sol_and_coordinates(sol, index=length(sol.u))
     x = semi.cache.elements.node_coordinates
     x = reshape(x, size(x, 2), size(x, 3))
     u = sol.u[index]
-    u = wrap_and_reshape(u, semi)        
+    u = wrap_and_reshape(u, semi)
     return u, x
 end
 
@@ -295,11 +296,11 @@ function calc_solution_norm_1d(u, semi)
     return sqrt(sum(wJ .* norm.(u).^2))
 end
 
-function calc_error_1d(sol; normalize=true) 
+function calc_error_1d(sol; normalize=true)
     error = map(sol.u, sol.t) do u, t
         x = semi.cache.elements.node_coordinates
         x = reshape(x, size(x, 2), size(x, 3))
-        u = wrap_and_reshape(u, semi)        
+        u = wrap_and_reshape(u, semi)
         J = inv.(semi.cache.elements.inverse_jacobian)
         w = semi.solver.basis.weights
         wJ = w * J'
@@ -314,12 +315,12 @@ function calc_error_1d(sol; normalize=true)
     return error
 end
 
-# here, field is a function of the form field(u, equations) -> scalar 
-function calc_field_error_1d(sol; field=pressure) 
+# here, field is a function of the form field(u, equations) -> scalar
+function calc_field_error_1d(sol; field=pressure)
     error = map(sol.u, sol.t) do u, t
         x = semi.cache.elements.node_coordinates
         x = reshape(x, size(x, 2), size(x, 3))
-        u = wrap_and_reshape(u, semi)        
+        u = wrap_and_reshape(u, semi)
         J = inv.(semi.cache.elements.inverse_jacobian)
         w = semi.solver.basis.weights
         wJ = w * J'

@@ -5,26 +5,27 @@ end
 
 using Trixi
 using Plots
+using LaTeXStrings
 include("trixi_utils.jl")
 
 for (polydeg, initial_refinement_level) in ((3, 7), (7, 6))
     # plot APEC-EC vs APEC-only solution
-    trixi_include("trixi_transcritical_shock.jl", 
+    trixi_include("trixi_transcritical_shock.jl",
                     volume_flux = flux_terashima_etal,
                     volume_integral = volume_integral_apec,
-                    polydeg = polydeg, 
+                    polydeg = polydeg,
                     initial_refinement_level = initial_refinement_level)
 
-    # density 
+    # density
     pd = PlotData1D(sol.u[end], semi)
     p1 = plot(pd["rho"], linewidth=3, label="APEC only", dpi=400)
 
-    # pressure 
+    # pressure
     p2 = plot(pd["p"],  linewidth=3, label="APEC only", dpi=400)
 
-    trixi_include("trixi_transcritical_shock.jl", 
+    trixi_include("trixi_transcritical_shock.jl",
                 volume_flux = flux_terashima_etal,
-                polydeg = polydeg, 
+                polydeg = polydeg,
                 initial_refinement_level = initial_refinement_level)
 
     # u, x = sol_and_coordinates(sol)
@@ -35,14 +36,14 @@ for (polydeg, initial_refinement_level) in ((3, 7), (7, 6))
     # u_avg = vec(w' * u / sum(w))
     # p_avg = vec(w' * pressure.(u, equations) / sum(w))
 
-    # density 
+    # density
     pd = PlotData1D(sol.u[end], semi)
     plot!(p1, pd["rho"], linewidth=2, label="APEC + EC")
     # scatter!(p1, xc, getindex.(u_avg, 1), ms = 2, label="Cell average")
     plot!(p1, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
     savefig(p1, joinpath(FIGDIR, "transcritical_shock_rho_polydeg_$(polydeg).png"))
 
-    # pressure 
+    # pressure
     plot!(p2, pd["p"], linewidth=2, label="APEC + EC")
     # scatter!(p2, xc, p_avg, ms = 2, label="Cell average")
     plot!(p2, legendfontsize=12, guidefontsize=14, tickfontsize=12, titlefontsize=14, legend=:topright, dpi=400)
@@ -51,9 +52,9 @@ end
 
 # blending coefficient plots
 for volume_flux in (flux_central, flux_terashima_etal, flux_central_terashima_etal)
-    trixi_include("trixi_transcritical_shock.jl", 
+    trixi_include("trixi_transcritical_shock.jl",
                 volume_flux = volume_flux,
-                polydeg = 3, 
+                polydeg = 3,
                 initial_refinement_level = 7)
 
     u, x = sol_and_coordinates(sol)
@@ -62,7 +63,6 @@ for volume_flux in (flux_central, flux_terashima_etal, flux_central_terashima_et
     dx = xc[2] - xc[1]
 
     # density on left axis
-    using LaTeXStrings
     pd = PlotData1D(sol.u[end], semi)
     p3 = plot(pd["rho"], linewidth=2, label=L"$\rho$", dpi=400)
 
@@ -78,10 +78,10 @@ for volume_flux in (flux_central, flux_terashima_etal, flux_central_terashima_et
         color=:orange,
         bar_width=1.1 * dx,  # one bar per cell
         bar_edges=false,
-        legend=:topright, 
+        legend=:topright,
         xlims=[-0.5, 0.5],
         ylims=[0.0, 0.0425])
-    plot!(legendfontsize=12, guidefontsize=16, tickfontsize=14, dpi=400, 
+    plot!(legendfontsize=12, guidefontsize=16, tickfontsize=14, dpi=400,
           titlefontsize=14, legend=false)
 
     savefig(p3, joinpath(FIGDIR, "transcritical_shock_indicator_$(volume_flux).png"))

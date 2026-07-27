@@ -60,10 +60,10 @@ julia --project=. generate_APEC_EC_pr_figs.jl
 # Figures 4–5
 julia --project=. generate_pr_shock_figs.jl
 
-# Figures 6–7
+# Figures 6–7 (long runtime; optionally start Julia with multiple threads by adding the option `--threads=auto` to the command below)
 julia --project=. trixi_transcritical_mixing.jl
 
-# Figure 8 simulation + VTK export (long runtime)
+# Figure 8 simulation + VTK export (long runtime; optionally start Julia with multiple threads by adding the option `--threads=auto` to the command below)
 julia --project=. trixi_transcritical_jet.jl
 
 # Figures 8–9 publication PNGs from committed VTU snapshots
