@@ -47,6 +47,14 @@ pip install numpy matplotlib pyvista
 
 ## Run commands
 
+Figures 1–5 (`generate_*.jl`) can be run together:
+
+```bash
+julia --project=. --threads=auto run_generate_figs.jl
+```
+
+Or individually:
+
 ```bash
 # Figure 1
 julia --project=. generate_EPEC_vdw_figs.jl

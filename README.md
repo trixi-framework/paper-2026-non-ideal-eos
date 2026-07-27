@@ -70,10 +70,10 @@ Each directory has its own Julia environment (`Project.toml` and `Manifest.toml`
 ```bash
 cd paper_figures
 julia --project=. -e 'using Pkg; Pkg.instantiate()'
-julia --project=. generate_EPEC_vdw_figs.jl
+julia --project=. --threads=auto run_generate_figs.jl   # Figures 1–5 (all generate_*.jl)
 ```
 
-See [`paper_figures/README.md`](paper_figures/README.md) for the full script-to-figure mapping.
+See [`paper_figures/README.md`](paper_figures/README.md) for per-figure commands (including mixing/jet) and the full script-to-figure mapping.
 
 ### Appendix figures
 
