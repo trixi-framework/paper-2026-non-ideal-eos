@@ -168,9 +168,10 @@ function domain_change(x)
     return (b - a)/2 * (x + 1) +a;
 end
 
-N = parse(Int, get(ENV, "N", "3"))
-M = parse(Int, get(ENV, "M", "100"))
-fluid = get(ENV, "FLUID", "Water")
+N = 3
+M = 100
+# fluid = get(ENV, "FLUID", "Water")
+fluid = "Water"
 rd = RefElemData(Line(), SBP(), N)
 (VX, ), EToV = uniform_mesh(Line(), M)
 
@@ -214,6 +215,7 @@ println("Running ode solver")
 sol = solve(ode, SSPRK43(),
             abstol=1e-8, reltol=1e-6,
             #adaptive=false, dt = 1e-7, #dt = 0.1 * estimate_h(rd, md) / (lambda * (2 * rd.N + 1)),
+            maxiters=1e9,
             saveat=LinRange(tspan..., 100),
             callback=AliveCallback(alive_interval=200))
 u = parent(sol.u[end])
@@ -235,11 +237,11 @@ scatter!(vec(cell_avg(md.x, rd)), vec(cell_avg(getindex.(u, 1) ./ getindex.(u, 4
       linewidth=2.5, label="")
 if fluid == "Water"
     plot!(data["x"], data["rho"],
-          linewidth=3, linestyle=:dash, label="Analytical",
+          linewidth=3, linestyle=:dashdot, label="Analytical",
           yticks=901.2:-0.2:899.6, ylims=(899.5, 901.2))
 else
     plot!(data["x"], data["rho"],
-          linewidth=3, linestyle=:dash, label="Analytical",
+          linewidth=3, linestyle=:dashdot, label="Analytical",
           yticks=5.0:-0.5:0.55, ylims=(0.55, 5.0))
 end
 xlabel!(L"x")
@@ -252,7 +254,7 @@ plot(vec(md.x), vec(pressure.(u, equations)),
 scatter!(vec(cell_avg(md.x, rd)), vec(cell_avg(pressure.(u, equations), rd)),
       linewidth=2.5, label="")
 plot!(data["x"], data["p"],
-      linewidth=3, linestyle=:dash, label="Analytical")
+      linewidth=3, linestyle=:dashdot, label="Analytical")
 xlabel!(L"x")
 ylabel!("Pressure (Pa)")
 savefig(joinpath(FIGDIR, "pressure$(tag).png"))
@@ -265,18 +267,18 @@ plot(vec(md.x), vec(vel_final ./ speedsound_final),
 scatter!(vec(cell_avg(md.x, rd)), vec(cell_avg(vel_final ./ speedsound_final, rd)),
       linewidth=2.5, label="")
 plot!(data["x"], data["Mach"],
-      linewidth=3, linestyle=:dash, label="Analytical")
+      linewidth=3, linestyle=:dashdot, label="Analytical")
 xlabel!(L"x")
 ylabel!("Ma")
 savefig(joinpath(FIGDIR, "Mach$(tag).png"))
 
 
-## calculate change in entropy
-total_entropy = zeros(size(sol.t))
-for (i, t) in enumerate(sol.t)
-    total_entropy[i] = sum(md.wJq .* entropy.(parent(sol.u[i]), equations))
-end
-plot(sol.t, total_entropy, legend=false)
-xlabel!(L"t")
-ylabel!("Entropy")
-savefig(joinpath(FIGDIR, "entropy$(tag).png"))
+# ## calculate change in entropy
+# total_entropy = zeros(size(sol.t))
+# for (i, t) in enumerate(sol.t)
+#     total_entropy[i] = sum(md.wJq .* entropy.(parent(sol.u[i]), equations))
+# end
+# plot(sol.t, total_entropy, legend=false)
+# xlabel!(L"t")
+# ylabel!("Entropy")
+# savefig(joinpath(FIGDIR, "entropy$(tag).png"))

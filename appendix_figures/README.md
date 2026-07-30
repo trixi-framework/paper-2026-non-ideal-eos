@@ -15,8 +15,8 @@ Julia **1.12.6** was used to resolve [`Manifest.toml`](Manifest.toml).
 | Paper reference | Script(s) | Notes |
 |-----------------|-----------|-------|
 | **SG parameter table** (appendix) | [`SG_utils.jl`](SG_utils.jl) (`MySG` defaults) | Table values are authored in the manuscript; constants match the code |
-| **Figure 10** — liquid-water quasi-nozzle | [`AV_SGNozzleExact.jl`](AV_SGNozzleExact.jl), [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) | Pressure and Mach panels for water |
-| **Figure 11** — steam quasi-nozzle | same scripts with steam model toggles | Two rows: `N=3, M=100` and `N=7, M=50` |
+| **Figure 10** — liquid-water quasi-nozzle | [`AV_SGNozzleExact.jl`](AV_SGNozzleExact.jl), [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) | Water at `N=3, M=100` and `N=7, M=50` |
+| **Figure 11** — steam quasi-nozzle | same scripts | Steam at `N=3, M=100` and `N=7, M=50` |
 
 ## Files
 
@@ -25,16 +25,26 @@ Julia **1.12.6** was used to resolve [`Manifest.toml`](Manifest.toml).
 | [`SG_utils.jl`](SG_utils.jl) | Stiffened-gas EOS, fluxes, and quasi-1D helpers |
 | [`AV_SGNozzleExact.jl`](AV_SGNozzleExact.jl) | Analytical nozzle solution; writes `exactWater.mat` and `exactSteam.mat` |
 | [`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) | DG simulation and comparison plots against analytical/reference data |
+| [`run_generate_figs.jl`](run_generate_figs.jl) | Driver: exact subprocess, then four `trixi_include` quasi cases |
 | [`exactWater.mat`](exactWater.mat) | Committed analytical/reference profile for water |
 | [`exactSteam.mat`](exactSteam.mat) | Committed analytical/reference profile for steam |
 
 ## Run commands
 
-Exact reference plus the default quasi-nozzle solve (water, `N=3`, `M=100`) can be run together:
+Exact references plus all four water/steam quasi-nozzle panel resolutions:
 
 ```bash
 julia --project=. --threads=auto run_generate_figs.jl
 ```
+
+This runs `AV_SGNozzleExact.jl` in a subprocess, then uses `trixi_include` to override `fluid`, `N`, and `M` in `AV_SGQuasiNozzle.jl` for:
+
+| fluid | N | M   |
+|-------|---|-----|
+| Water | 3 | 100 |
+| Water | 7 | 50  |
+| Steam | 3 | 100 |
+| Steam | 7 | 50  |
 
 Or individually:
 
@@ -42,27 +52,8 @@ Or individually:
 # Regenerate analytical .mat references (optional; committed copies are provided)
 julia --project=. AV_SGNozzleExact.jl
 
-# Solve and write publication PNGs (default: water, N=3, M=100)
+# Single solve (defaults: water, N=3, M=100); override via trixi_include as in run_generate_figs.jl
 julia --project=. AV_SGQuasiNozzle.jl
 ```
 
-Default outputs under `figs/` (with the water/`N=3`/`M=100` settings):
-
-- `figs/pressureQuasiWaterN3M100.png`
-- `figs/MachQuasiWaterN3M100.png`
-
-Pressure and Mach filenames match the manuscript naming convention (`pressureQuasi{Water|Steam}N{N}M{M}.png`, `MachQuasi{Water|Steam}N{N}M{M}.png`). Density and entropy PNGs are also written for diagnostics.
-
-## Manual configuration for Figure 10–11
-
-[`AV_SGQuasiNozzle.jl`](AV_SGQuasiNozzle.jl) ships with the **water** model, `N = 3`, and `M = 100`. Edit before running:
-
-1. Comment/uncomment the water vs steam `model` constructor.
-2. Set `fluid = "Water"` or `fluid = "Steam"` to match (controls output filenames).
-3. For water Figure 10, set `N = 7`, `M = 50` (paper panel).
-4. For steam Figure 11, run twice: (`N=3`, `M=100`) and (`N=7`, `M=50`).
-5. For steam, also point `matread(...)` at `exactSteam.mat` instead of `exactWater.mat`.
-
-## Remaining limitations
-
-Water vs steam, polynomial degree, and mesh resolution still require manual edits rather than command-line arguments.
+Outputs under `figs/` follow `pressureQuasi{Water|Steam}N{N}M{M}.png` and `MachQuasi{Water|Steam}N{N}M{M}.png` (plus density/entropy diagnostics).
