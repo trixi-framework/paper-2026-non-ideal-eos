@@ -8,11 +8,11 @@ include("trixi_utils.jl")
 ###############################################################################
 # semidiscretization of the compressible Euler equations
 
-# the smooth Peng-Robinson N2 transcritical wave taken from "An entropy-stable hybrid 
-# scheme for simulations of transcritical real-fluid flows" by Ma, Ihme (2017). In this 
-# context, the wave is "transcritical" because the solution involves both subcritical 
-# and supercritical density and temperature values. 
-# 
+# the smooth Peng-Robinson N2 transcritical wave taken from "An entropy-stable hybrid
+# scheme for simulations of transcritical real-fluid flows" by Ma, Ihme (2017). In this
+# context, the wave is "transcritical" because the solution involves both subcritical
+# and supercritical density and temperature values.
+#
 # <https://doi.org/10.1016/j.jcp.2017.03.022>
 function initial_condition_transcritical_wave(x, t,
                                               equations::NonIdealCompressibleEulerEquations1D{<:PengRobinson})
@@ -43,7 +43,7 @@ function initial_condition_transcritical_wave_sharp(x, t,
 
     rho_min, rho_max = 56.9, 793.1
     v1 = 100
-    rho = 0.5 * (rho_min + rho_max) + 
+    rho = 0.5 * (rho_min + rho_max) +
         0.5 * (rho_max - rho_min) * tanh(20 * (abs(sin(pi * (x[1] - v1 * t))) - 0.75))
     p = 5e6
 
@@ -59,7 +59,7 @@ function initial_condition_density_wave_coppola(x, t, equations::NonIdealCompres
     eos = equations.equation_of_state
 
     A, B = 0.07, 0.12
-    rho_0 = inv(3 * eos.b) # critical density 
+    rho_0 = inv(3 * eos.b) # critical density
     v1 = 1.0
     rho = rho_0 * (A + B * exp(sin(2 * pi * (x[1] - v1 * t))))
     p = 100 # supercritical
@@ -117,13 +117,13 @@ stabilization = :apec_ecav
 volume_integral_apec = VolumeIntegralFluxDifferencing(volume_flux)
 
 # APEC + ECAV
-indicator = IndicatorEntropyCorrection(equations, basis) 
+indicator = IndicatorEntropyCorrection(equations, basis)
 volume_integral_default = volume_integral_apec
 volume_integral_entropy_stable = VolumeIntegralPureLGLFiniteVolume(surface_flux)
 volume_integral_apec_ecav = VolumeIntegralAdaptive(indicator,
                                                    volume_integral_default,
                                                    volume_integral_entropy_stable)
-                                                 
+
 if stabilization == :apec
     volume_integral = volume_integral_apec
 elseif stabilization == :apec_ecav
@@ -202,8 +202,8 @@ end
 kwargs = (; maxiters=1_000_000)
 
 sol = solve(ode, solver; dt = stepsize_callback(ode), # solve needs some value here but it will be overwritten by the stepsize_callback
-            kwargs..., 
-            ode_default_options()..., saveat=LinRange(tspan..., 500), 
+            kwargs...,
+            ode_default_options()..., saveat=LinRange(tspan..., 500),
             callback = callbacks);
 
 if sol.retcode !== ReturnCode.Success
@@ -227,7 +227,7 @@ end
 #     plot!(p1, p2, leg=true)
 # end
 
-# @gif for (i, u) in enumerate(sol.u)   
+# @gif for (i, u) in enumerate(sol.u)
 #     u_exact = @. initial_condition(SVector(x), sol.t[i], equations)
 #     p1 = plot(PlotData1D(u, semi)["rho"], label="p=$polydeg", linewidth=2)
 #     plot!(p1, vec(x), vec(getindex.(u_exact, 1)), label="Exact", linewidth=2, legend=:topright)
