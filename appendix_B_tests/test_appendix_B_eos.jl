@@ -55,10 +55,12 @@ function dqdv(q, equations::NonIdealCompressibleEulerEquations1D)
                          (v1^2 - b * T^2) * inva, v1 * T, T^2)
 end
 
-function check_appendix_B(eos, rho, v1, T; label)
+function check_appendix_B(eos, q; label)
     equations = NonIdealCompressibleEulerEquations1D(eos)
+    rho = q[1]
     V = inv(rho)
-    q = SVector(V, v1, T)
+    v1 = q[2]
+    T = q[3]
     u = thermo2cons(q, equations)
 
     A0 = ForwardDiff.hessian(u_ -> entropy(u_, equations), u)
@@ -84,7 +86,10 @@ function check_appendix_B(eos, rho, v1, T; label)
 end
 
 # Trixi N₂ defaults; fixed admissible supercritical / safe states (V > b, cᵥ > 0)
-check_appendix_B(VanDerWaals(), 2.0, -0.5, 300.0; label="VanDerWaals")
-check_appendix_B(PengRobinson(), 1.7, -0.1, 300.0; label="PengRobinson")
+q = SVector(2.0, -0.5, 300.0)
+check_appendix_B(VanDerWaals(), q; label="VanDerWaals")
+
+q = SVector(1.7, -0.1, 300.0)
+check_appendix_B(PengRobinson(), q; label="PengRobinson")
 
 println("All Appendix B EOS checks passed.")
