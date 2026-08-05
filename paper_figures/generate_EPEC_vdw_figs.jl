@@ -166,11 +166,17 @@ for initial_refinement_level in (2, 3)
         linestyle=:solid, linewidth=2, markersize=4, dpi=400, yaxis=:log)
     spectra_central = eigenvalue_spectra(sol, semi)
 
+    if initial_refinement_level == 2
+        cfl = 0.01
+    else
+        cfl = 0.002
+    end
+
     trixi_include("trixi_transcritical_wave.jl",
                 eos_setup = :(:VanDerWaals),
                 stabilization = :(:apec),
                 initial_refinement_level = :($initial_refinement_level),
-                cfl = 0.01,
+                cfl = cfl,
                 volume_flux = flux_coppola,
                 surface_flux = flux_coppola)
     u, x = sol_and_coordinates(sol)
