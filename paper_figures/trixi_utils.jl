@@ -174,7 +174,15 @@ end
                                           drho_e_dp_at_const_rho_rr)
     num = (rho_e_jump - drho_e_internal_drho_p_avg * rho_jump - drho_e_dp_at_const_rho_avg * p_jump)
     den = drho_e_internal_drho_p_jump
-    rho_avg = rho_avg - num * den / (den^2 + eps(typeof(den)))
+    
+    # rho_avg = rho_avg - num * den / (den^2 + eps(typeof(den)))
+
+    # mimic the Coppola flux regularization strategy
+    if abs(den) < 100 * eps(typeof(den))
+        rho_avg = rho_avg
+    else
+        rho_avg = rho_avg - num / den
+    end
 
     rho_e_v1_avg = (rho_e_internal_avg + drho_e_internal_drho_p_avg * rho_avg - drho_e_internal_drho_p_rho_avg) *
                    v1_avg
