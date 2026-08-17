@@ -1,4 +1,4 @@
-# Nodal discontinuous Galerkin methods for non-ideal equations of state
+# Reproducibility repository for "Nodal discontinuous Galerkin methods for non-ideal equations of state"
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-success.svg)](LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21620203.svg)](https://zenodo.org/doi/10.5281/zenodo.21620203)
