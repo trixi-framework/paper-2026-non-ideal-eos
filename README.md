@@ -15,7 +15,7 @@ If you find these results useful, please cite the article
   author={Chan, Jesse and Ranocha, Hendrik and Park, Raymond and Lampert, Joshua and Ching, Eric and Edoh, Ayaboe},
   year={2026},
   month={8},
-  eprint={TODO},
+  eprint={2608.14506},
   eprinttype={arxiv},
   eprintclass={math.NA}
 }
