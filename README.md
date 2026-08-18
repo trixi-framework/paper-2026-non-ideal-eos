@@ -5,7 +5,7 @@
 
 Reproducibility repository for the paper
 
-> *Nodal discontinuous Galerkin methods for non-ideal equations of state: pressure equilibrium preservation and entropy correction*
+> [*Nodal discontinuous Galerkin methods for non-ideal equations of state: pressure equilibrium preservation and entropy correction*](https://arxiv.org/abs/2608.14506v1)
 
 If you find these results useful, please cite the article
 
